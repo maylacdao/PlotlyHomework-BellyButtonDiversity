@@ -61,8 +61,19 @@ function buildCharts(sample) {
 
     var bubbleLayout = {
       margin: { t: 0 },
-      xaxis: { title: "OTU ID" },
+      xaxis: { 
+        title: "OTU ID",
+        gridcolor: 'white',
+        type:'log',
+        gridwidth:2
+      },
+      yaxis: {
+        gridcolor: 'white',
+        gridwidth:2
+      },
       hovermode: "closest",
+      paper_bgcolor:'rgb(229, 236, 246)',
+      plot_bgcolor: 'rgb(229, 236, 246)'
       };
 
     Plotly.plot("bubble", bubbleData, bubbleLayout);
