@@ -9,15 +9,20 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="static/css/styles.css" />
   </head>
 
   <body>
     <div class="container">
       <div class="row">
         <div class="col-md-12 jumbotron text-center">
-          <h1>Belly Button Biodiversity Dashboard</h1>
-          <p>Use the interactive charts below to explore the dataset</p>
+          <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+              <span class="navbar-brand mb-0 h1">Belly Button Diversity</span>
+            </div>
+          </nav>
         </div>
+        <em><p>Use the interactive charts below to explore the dataset</p></em>
       </div>
       <div class="row">
         <div class="col-md-2">
@@ -42,12 +47,14 @@
           <div id="gauge"></div>
         </div>
       </div>
+      <br />
       <div class="row">
         <div class="col-md-12">
           <div id="bubble"></div>
         </div>
       </div>
     </div>
+    <br />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
