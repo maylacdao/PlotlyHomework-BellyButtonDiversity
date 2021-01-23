@@ -3,11 +3,11 @@ function buildMetadata(sample) {
     d3.json("samples.json").then((data) => {
         //console.log(data);
         var metadata = data.metadata;
-        var resultsArray = metadata.filter(sampleObject => sampleObject.id == sample);
+        var resultsArray = metadata.filter(sampleobject => sampleobject.id == sample);
         var result = resultsArray[0];
         var PANEL = d3.select("#sample-metadata");
         PANEL.html("");
-        Object.entries(results).forEach(([key, value]) => {
+        Object.entries(result).forEach(([key, value]) => {
             PANEL.append("h6").text(`${key}:${value}`);
         });
     });
@@ -19,12 +19,12 @@ function buildCharts() {
     //Load sample data using d3.js
     d3.json("samples.json").then((data) => {
         var samples = data.samples;
-        var resultsArray = samples.filter(sampleObject => sampleObject.id == samples);
+        var resultsArray = samples.filter(sampleobject => sampleobject.id == samples);
         var result = resultsArray[0];
 
-        var ids = result.otu_ids;
-        var labels = result.otu_labels;
-        var values = result.sampleData;
+        var ids = data.otu_ids;
+        var labels = data.otu_labels;
+        var values = data.sampleData;
 
         //Build horizontal bar chart using sample data
         var horizontalBarData = [{
