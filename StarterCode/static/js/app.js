@@ -20,12 +20,29 @@ function buildCharts() {
     d3.json("samples.json").then((data) => {
         var samples = data.samples;
         var resultsArray = samples.filter(sampleobject => sampleobject.id == samples);
+        
         var result = resultsArray[0];
+        console.log(result);
 
-        var ids = data.otu_ids;
-        var labels = data.otu_labels;
-        var values = data.sample_values;
+        var ids = result.otu_ids;
+        var labels = result.otu_labels;
+        var values = result.sample_values;
 
+        //Build horizontal bar chart using sample data
+        var horizontalBarData = [{
+            y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
+            x: values.slice(0,10).reverse(),
+            text: labels.slice(0,10).reverse(),
+            type:"bar",
+            orientation: "h"
+        }];
+
+        var horizontalBarLayout = {
+            title: "Top 10 Microbial Species per Individual"
+        };
+
+        Plotly.newPlot("bar", horizontalBarData, horizontalBarLayout);
+        
         //Build bubble chart using sample data
         var bubbleChartData = [{
             x: ids,
@@ -46,23 +63,6 @@ function buildCharts() {
 
         Plotly.newPlot("bubble", bubbleChartData, bubbleChartLayout);
     });
-
-        //Build horizontal bar chart using sample data
-        var horizontalBarData = [{
-            y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
-            x: values.slice(0,10).reverse(),
-            text: labels.slice(0,10).reverse(),
-            type:"bar",
-            orientation: "h"
-        }];
-
-        var horizontalBarLayout = {
-            title: "Top 10 Microbial Species per Individual"
-        };
-
-        Plotly.newPlot("bar", horizontalBarData, horizontalBarLayout);
-        
-        
 }
 
 function init() {
