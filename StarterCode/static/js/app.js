@@ -24,7 +24,7 @@ function buildCharts() {
 
         var ids = data.otu_ids;
         var labels = data.otu_labels;
-        var values = data.sampleData;
+        var values = data.sample_values;
 
         //Build bubble chart using sample data
         var bubbleChartData = [{
@@ -46,7 +46,7 @@ function buildCharts() {
 
         Plotly.newPlot("bubble", bubbleChartData, bubbleChartLayout);
     });
-    
+
         //Build horizontal bar chart using sample data
         var horizontalBarData = [{
             y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
