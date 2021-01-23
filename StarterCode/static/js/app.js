@@ -1,15 +1,94 @@
 //Load sample data (json file)
-d3.json("samples.json").then((data) => {
-    console.log(data);
-});
+function buildMetadata(sample) {
+    d3.json("samples.json").then((data) => {
+        //console.log(data);
+        var metadata = data.metadata;
+        var resultsArray = metadata.filter(sampleObject => sampleObject.id == sample);
+        var result = resultsArray[0];
+        var PANEL = d3.select("#sample-metadata");
+        PANEL.html("");
+        Object.entries(results).forEach(([key, value]) => {
+            PANEL.append("h6").text(`${key}:${value}`);
+        });
+    });
+};
+
 
 //Create function to build horizontal bar chart
-function buildHorizontalBarChart() {
-    var trace1 
+function buildCharts() {
+    //Load sample data using d3.js
+    d3.json("samples.json").then((data) => {
+        var samples = data.samples;
+        var resultsArray = samples.filter(sampleObject => sampleObject.id == samples);
+        var result = resultsArray[0];
 
-    var data 
+        var ids = result.otu_ids;
+        var labels = result.otu_labels;
+        var values = result.sampleData;
 
-    var layout
+        //Build horizontal bar chart using sample data
+        var horizontalBarData = [{
+            y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
+            x: values.slice(0,10).reverse(),
+            text: labels.slice(0,10).reverse(),
+            type:"bar",
+            orientation: "h"
+        }];
 
-    Plotly.newPlot("bar", data, layout)
+        var horizontalBarLayout = {
+            title: "Top 10 Microbial Species per Individual"
+        };
+
+        Plotly.newPlot("bar", horizontalBarData, horizontalBarLayout);
+        
+        //Build bubble chart using sample data
+        var bubbleChartData = [{
+            x: ids,
+            y: values,
+            text: labels,
+            mode: "markers",
+            marker: {
+                color: ids,
+                size: values
+            }
+        }];
+
+        var bubbleChartLayout = {
+            xaxis:{title: "OTU ID"},
+            margin: {t:0},
+            hovermode:"closest"
+        };
+
+        Plotly.newPlot("bubble", bubbleChartData, bubbleChartLayout);
+    });
 }
+
+function init() {
+    //Establish reference to dropdown select element
+    var selector = d3.select("#selDataset");
+
+    //Populate options using sample names
+    d3.json("samples.json").then((data) => {
+        var sampleNames = data.names;
+        sampleNames.forEach((sample) => {
+            selector
+                .append("option")
+                .text(sample)
+                .property("value", sample);
+        });
+
+        //Build initial plots using first sample entry
+        const firstEntry = sampleNames[0];
+        buildCharts(firstEntry);
+        buildMetadata(firstEntry);
+    });
+}
+
+function optionChanged(newSample) {
+    //Fetch new data whenever a different option is selected
+    buildCharts(newSample);
+    buildMetadata(newSample);
+}
+
+//Initialize dashboard
+init();
